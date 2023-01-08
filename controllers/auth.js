@@ -7,7 +7,7 @@ import User from "../models/User.js";
 export const register = async (req, res) => {
   try {
     const {
-      username,
+      // username,
       email,
       password,
       firstName,
@@ -15,6 +15,7 @@ export const register = async (req, res) => {
       location,
       occupation,
       picturePath,
+      friends,
     } = req.body;
     // const picturePath = req.file.path;
     const user = await User.findOne({ email });
@@ -24,12 +25,13 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
     const result = await User.create({
-      username,
+      // username,
       email,
       password: hashedPassword,
       picturePath,
       firstName,
       lastName,
+      friends,
       location,
       occupation,
       viewedProfile: Math.random() * 100,
@@ -46,6 +48,8 @@ export const register = async (req, res) => {
     res.status(201).json(savedUser);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
+    
+    console.log("register error")
     console.log(error);
   }
 };
@@ -69,6 +73,8 @@ export const login = async (req, res) => {
         res.status(200).json({ result: user, token });
     } catch (error) {
         res.status(500).json({ message: "Something went wrong" });
+        console.log("login error")
         console.log(error);
     }
 }
+

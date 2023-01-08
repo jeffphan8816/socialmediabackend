@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     // username: {
     //     type: String,
     //     required: true,
@@ -9,29 +10,29 @@ const userSchema = new mongoose.Schema({
     //     max: 20,
     // },
     email: {
-        type: String,
-        required: true,
-        unique: true,
-        max: 50,
+      type: String,
+      required: true,
+      unique: true,
+      max: 50,
     },
     password: {
-        type: String,
-        required: true,
-        min: 6,
+      type: String,
+      required: true,
+      min: 6,
     },
     picturePath: {
-        type: String,
-        default: "",
+      type: String,
+      default: "",
     },
     firstName: {
-        type: String,
-        max: 50,
-        min: 2,
+      type: String,
+      max: 50,
+      min: 2,
     },
     lastName: {
-        type: String,
-        max: 50,
-        min: 2,
+      type: String,
+      max: 50,
+      min: 2,
     },
     // followers: {
     //     type: Array,
@@ -41,11 +42,17 @@ const userSchema = new mongoose.Schema({
     //     type: Array,
     //     default: [],
     // },
-    location:  String,
+    location: String,
     occupation: String,
     impressions: Number,
     viewedProfile: Number,
-}, { timestamps: true });
+    friends: {
+      type: Array,
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 
