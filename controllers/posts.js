@@ -1,7 +1,7 @@
 import Post from "../models/Post.js";
+import User from "../models/User.js";
 
 /* CREATE */
-
 export const createPost = async (req, res) => {
   try {
     const { userId, description, picturePath } = req.body;
@@ -20,6 +20,7 @@ export const createPost = async (req, res) => {
     await newPost.save();
     const posts = await Post.find();
     res.status(201).json(posts);
+    console.log("created post")
   } catch (err) {
     res.status(500).json(err);
   }
