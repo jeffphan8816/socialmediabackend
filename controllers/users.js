@@ -41,21 +41,27 @@ export const getFriends = async (req, res) => {
 /* UPDATE */
 export const addRemoveFriend = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    const friend = await User.findById(req.params.friendId);
-    if (user.friends.includes(req.params.friendId)) {
-      await user.updateOne({ $pull: { friends: req.params.friendId } });
-      await friend.updateOne({ $pull: { friends: req.params.id } });
+    const { id, friendId } = req.params;
+    const user = await User.findById(id);
+    const friend = await User.findById(friendId);
+    if (user.friends.includes(friendId)) {
+      console.log("friends")
+      await user.updateOne({ $pull: { friends: friendId } });
+      await friend.updateOne({ $pull: { friends: id } });
+      user.friends = user.friends.filter((id) => id !== friendId);
+      friend.friends = friend.friends.filter((id) => id !== id);
+      
       // res.status(200).json("Friend has been removed");
     } else {
       await user.updateOne({ $push: { friends: req.params.friendId } });
       await friend.updateOne({ $push: { friends: req.params.id } });
+      user.friends.push(friendId);
+      friend.friends.push(id);
       // res.status(200).json("Friend has been added");
     }
-
     const friendList = await Promise.all(
       user.friends.map((friendId) => {
-        return User.findById;
+        return User.findById(friendId);
       })
     );
     let friends = [];
